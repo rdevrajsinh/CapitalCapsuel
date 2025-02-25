@@ -5,8 +5,8 @@
   "scripts": {
     "install": "npm install --prefix api && npm install --prefix client",
     "build": "npm run build --prefix client",
-    "start": "node api/server.js",
-    "dev": "concurrently \"cd api && nodemon server.js\" \"cd client && npm start\""
+    "start": "node api/index.js",
+    "dev": "concurrently \"cd api && nodemon index.js\" \"cd client && npm start\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
