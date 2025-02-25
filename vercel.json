@@ -26,5 +26,7 @@
       "src": "/(.*)",
       "dest": "/client/build/index.html"
     }
-  ]
+  ],
+  "cleanUrls": true, // Optional: Remove .html extensions from URLs
+  "trailingSlash": false // Optional: Remove trailing slashes from URLs
 }
