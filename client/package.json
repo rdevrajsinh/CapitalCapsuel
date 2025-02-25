@@ -17,6 +17,10 @@
     "react-scripts": "5.0.1",
 "react-vertical-timeline-component": "^3.0.0"
   },
+  "devDependencies": {
+  "@babel/plugin-proposal-private-property-in-object": "^7.21.0"
+}
+
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
