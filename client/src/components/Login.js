@@ -22,7 +22,7 @@ const Login = () => {
             navigate('/document-form'); // Redirect to Info page
             window.location.reload();
         } catch (error) {
-            alert('Login failed');
+        console.error("Error Details:", error.response ? error.response.data : error.message);
         }
     };
 
