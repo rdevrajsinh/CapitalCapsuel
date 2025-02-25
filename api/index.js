@@ -15,12 +15,8 @@ const documentRoutes = require("./routes/ipodocroutes");
 const app = express();
 
 // Middleware
-const corsOptions = {
-  origin: ["https://capital-capsuel.vercel.app"], // Allow frontend origin
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true // Allow cookies & authentication headers
-};
-app.use(cors(corsOptions));
+
+app.use(cors());
 
 app.use(express.json());
 
