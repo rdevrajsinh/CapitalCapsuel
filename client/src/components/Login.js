@@ -9,22 +9,43 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate(); // Initialize useNavigate
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            console.log("API URL:", process.env.REACT_APP_API_URL);
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { email, password });
-            console.log("Response Data:", response.data);
-            const decodedToken = jwtDecode(response.data.token);
-            console.log("Decoded Token:", decodedToken);
-            alert('Login successful');
-            localStorage.setItem("userId", decodedToken.id);
-            navigate('/document-form'); // Redirect to Info page
-            window.location.reload();
-        } catch (error) {
-        console.error("Error Details:", error.response ? error.response.data : error.message);
+   const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+        console.log("API URL:", process.env.REACT_APP_API_URL);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { email, password });
+        
+        console.log("Response Data:", response.data);
+
+        if (!response.data.token) {
+            throw new Error("No token received in response");
         }
-    };
+
+        const decodedToken = jwtDecode(response.data.token);
+        console.log("Decoded Token:", decodedToken);
+
+        alert('Login successful');
+        localStorage.setItem("userId", decodedToken.id);
+        navigate('/document-form'); 
+        window.location.reload();
+    } catch (error) {
+        console.error("Login failed:", error);
+
+        if (error.response) {
+            console.error("Response Data:", error.response.data);
+            console.error("Status Code:", error.response.status);
+            console.error("Headers:", error.response.headers);
+            alert(`Error: ${error.response.data.message || "Something went wrong!"}`);
+        } else if (error.request) {
+            console.error("No response received from server:", error.request);
+            alert("Server is not responding. Please try again later.");
+        } else {
+            console.error("Request error:", error.message);
+            alert(`Error: ${error.message}`);
+        }
+    }
+};
+
 
     return (
         <Container
