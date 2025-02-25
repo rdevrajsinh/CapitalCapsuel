@@ -1,7 +1,7 @@
 {
   "builds": [
     {
-      "src": "server.js",
+      "src": "server/server.js",
       "use": "@vercel/node"
     },
     {
@@ -11,9 +11,20 @@
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "server.js" },
-    { "src": "/(.*)", "dest": "client/build/$1" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "client/build/index.html" }
+    {
+      "src": "/api/(.*)",
+      "dest": "server/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "client/build/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "client/build/index.html"
+    }
   ]
 }
