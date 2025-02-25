@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "install": "npm install --prefix server && npm install --prefix client",
+    "install": "npm install --prefix api && npm install --prefix client",
     "build": "npm run build --prefix client",
-    "start": "node server/index.js",
-    "dev": "concurrently \"cd server && nodemon index.js\" \"cd client && npm start\""
+    "start": "node api/server.js",
+    "dev": "concurrently \"cd api && nodemon server.js\" \"cd client && npm start\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
