@@ -1,10 +1,12 @@
 {
   "name": "sme-ipo-checklist",
   "version": "1.0.0",
-  "main": "server/server.js",
+  "main": "index.js",
   "scripts": {
-    "build": "cd client && npm install && npm run build",
-    "start": "node server/server.js"
+    "install": "npm install --prefix server && npm install --prefix client",
+    "build": "npm run build --prefix client",
+    "start": "node server/index.js",
+    "dev": "concurrently \"cd server && nodemon index.js\" \"cd client && npm start\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
