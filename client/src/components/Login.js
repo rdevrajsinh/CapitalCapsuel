@@ -12,6 +12,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
+            console.log("API URL:", process.env.REACT_APP_API_URL);
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { email, password });
             console.log("Response Data:", response.data);
             const decodedToken = jwtDecode(response.data.token);
