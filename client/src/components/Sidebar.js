@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Typography } from '@mui/material';
+import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { Description, AttachMoney, Map, Menu, ExitToApp } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -7,11 +7,12 @@ const drawerWidth = 240;
 
 const Sidebar = ({ onLogout }) => {
   const navigate = useNavigate();
-  const [drawerOpen, setDrawerOpen] = useState(false); // Local state for drawer open/close
+  const isMobile = useMediaQuery('(max-width: 600px)'); // Detect mobile screen
+  const [drawerOpen, setDrawerOpen] = useState(!isMobile); // Default open for desktop
   const [animateLogo, setAnimateLogo] = useState(false);
 
   const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen); // Toggle drawer state
+    if (isMobile) setDrawerOpen(!drawerOpen); // Only toggle on mobile
   };
 
   const handleLogout = () => {
@@ -21,23 +22,22 @@ const Sidebar = ({ onLogout }) => {
 
   useEffect(() => {
     setAnimateLogo(true);
-    const timer = setTimeout(() => {
-      setAnimateLogo(false);
-    }, 500);
-
+    const timer = setTimeout(() => setAnimateLogo(false), 500);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <IconButton
-        edge="start"
-        color="inherit"
-        onClick={toggleDrawer}
-        sx={{ display: { sm: 'none' }, position: 'absolute', top: 16, left: 16 }}
-      >
-        <Menu />
-      </IconButton>
+      {isMobile && (
+        <IconButton
+          edge="start"
+          color="inherit"
+          onClick={toggleDrawer}
+          sx={{ position: 'absolute', top: 16, left: 16 }}
+        >
+          <Menu />
+        </IconButton>
+      )}
       <Drawer
         sx={{
           width: drawerWidth,
@@ -48,10 +48,10 @@ const Sidebar = ({ onLogout }) => {
             color: '#ffffff',
           },
         }}
-        variant="temporary" // Use temporary variant for mobile
+        variant={isMobile ? 'temporary' : 'permanent'} // Always open on desktop
         anchor="left"
         open={drawerOpen}
-        onClose={toggleDrawer} // Close drawer when clicking outside
+        onClose={isMobile ? toggleDrawer : undefined} // Only close on mobile
       >
         <Box sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
           <img
@@ -76,9 +76,7 @@ const Sidebar = ({ onLogout }) => {
             { text: 'Roadmap', icon: <Map />, path: '/roadmap' },
           ].map((item) => (
             <ListItem button key={item.text} component={Link} to={item.path} onClick={toggleDrawer}>
-              <ListItemIcon sx={{ color: '#ffffff' }}>
-                {item.icon}
-              </ListItemIcon>
+              <ListItemIcon sx={{ color: '#ffffff' }}>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} sx={{ color: '#ffffff' }} />
             </ListItem>
           ))}
