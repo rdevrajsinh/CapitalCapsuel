@@ -65,7 +65,7 @@ const Signup = () => {
                 <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 2 }}>
                     <img src="/Logo.png" alt="Logo" width={60} height={60} />
                     <Typography variant="h5" component="h1" color="#16425b" sx={{ ml: 1 }}>
-                        Capital Capsule
+                        IPO Elivate
                     </Typography>
                 </Box>
                 <Typography variant="h4" component="h1" gutterBottom align="center" color="#1976d2">

@@ -66,7 +66,7 @@ const Sidebar = ({ onLogout }) => {
             }}
           />
           <Typography variant="h6" color="#ffffff">
-            Capital Capsule
+            IPO Elivate
           </Typography>
         </Box>
         <List sx={{ marginTop: 2 }}>
