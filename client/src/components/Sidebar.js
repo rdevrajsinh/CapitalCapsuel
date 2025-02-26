@@ -1,29 +1,31 @@
-// components/Sidebar.js
 import React, { useState, useEffect } from 'react';
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Typography } from '@mui/material';
-import { Description, AttachMoney, Map, Menu, ExitToApp } from '@mui/icons-material'; // Import ExitToApp icon
+import { Description, AttachMoney, Map, Menu, ExitToApp } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
-const Sidebar = ({ onLogout, drawerOpen, toggleDrawer }) => {
-  const navigate = useNavigate(); // Use useNavigate for redirection
+const Sidebar = ({ onLogout }) => {
+  const navigate = useNavigate();
+  const [drawerOpen, setDrawerOpen] = useState(false); // Local state for drawer open/close
   const [animateLogo, setAnimateLogo] = useState(false);
 
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen); // Toggle drawer state
+  };
+
   const handleLogout = () => {
-    // Perform logout logic here (e.g., clear tokens, user data)
-    onLogout(); // Call the onLogout function passed as a prop
-    navigate('/'); // Redirect to the login page
+    onLogout();
+    navigate('/');
   };
 
   useEffect(() => {
-    // Trigger animation when the component mounts
     setAnimateLogo(true);
     const timer = setTimeout(() => {
       setAnimateLogo(false);
-    }, 500); // Animation duration
+    }, 500);
 
-    return () => clearTimeout(timer); // Cleanup timer on unmount
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -32,7 +34,7 @@ const Sidebar = ({ onLogout, drawerOpen, toggleDrawer }) => {
         edge="start"
         color="inherit"
         onClick={toggleDrawer}
-        sx={{ display: { sm: 'none' }, position: 'absolute', top: 16, left: 16 }} // Show only on mobile
+        sx={{ display: { sm: 'none' }, position: 'absolute', top: 16, left: 16 }}
       >
         <Menu />
       </IconButton>
@@ -42,15 +44,15 @@ const Sidebar = ({ onLogout, drawerOpen, toggleDrawer }) => {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            backgroundColor: '#16425b', // Primary color
-            color: '#ffffff', // Text color
+            backgroundColor: '#16425b',
+            color: '#ffffff',
           },
         }}
-        variant="persistent" // Use persistent variant for desktop
+        variant="temporary" // Use temporary variant for mobile
         anchor="left"
-        open={drawerOpen} // Control drawer open state
+        open={drawerOpen}
+        onClose={toggleDrawer} // Close drawer when clicking outside
       >
-        {/* Logo and Title */}
         <Box sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
           <img
             src="/Logo.png"
@@ -60,7 +62,7 @@ const Sidebar = ({ onLogout, drawerOpen, toggleDrawer }) => {
               height: '40px',
               marginRight: '8px',
               transition: 'transform 0.5s',
-              transform: animateLogo ? 'translateY(-20px)' : 'translateY(0)', // Jump effect
+              transform: animateLogo ? 'translateY(-20px)' : 'translateY(0)',
             }}
           />
           <Typography variant="h6" color="#ffffff">
@@ -73,7 +75,7 @@ const Sidebar = ({ onLogout, drawerOpen, toggleDrawer }) => {
             { text: 'Cost', icon: <AttachMoney />, path: '/cost' },
             { text: 'Roadmap', icon: <Map />, path: '/roadmap' },
           ].map((item) => (
-            <ListItem button key={item.text} component={Link} to={item.path}>
+            <ListItem button key={item.text} component={Link} to={item.path} onClick={toggleDrawer}>
               <ListItemIcon sx={{ color: '#ffffff' }}>
                 {item.icon}
               </ListItemIcon>
@@ -81,11 +83,10 @@ const Sidebar = ({ onLogout, drawerOpen, toggleDrawer }) => {
             </ListItem>
           ))}
         </List>
-        {/* Logout Option */}
-        <List sx={{ marginTop: 'auto' }}> {/* Push logout to the bottom */}
+        <List sx={{ marginTop: 'auto' }}>
           <ListItem button onClick={handleLogout}>
             <ListItemIcon sx={{ color: '#ffffff' }}>
-              <ExitToApp /> {/* Logout icon */}
+              <ExitToApp />
             </ListItemIcon>
             <ListItemText primary="Logout" sx={{ color: '#ffffff' }} />
           </ListItem>
