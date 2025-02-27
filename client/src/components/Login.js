@@ -9,43 +9,21 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate(); // Initialize useNavigate
 
-   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-        console.log("API URL:", process.env.REACT_APP_API_URL);
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { email, password });
-        
-        console.log("Response Data:", response.data);
-
-        if (!response.data.token) {
-            throw new Error("No token received in response");
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { email, password });
+            console.log("Response Data:", response.data);
+            const decodedToken = jwtDecode(response.data.token);
+            console.log("Decoded Token:", decodedToken);
+           // alert('Login successful');
+            localStorage.setItem("userId", decodedToken.id);
+            navigate('/document-form'); // Redirect to Info page
+            window.location.reload();
+        } catch (error) {
+            alert('Login failed');
         }
-
-        const decodedToken = jwtDecode(response.data.token);
-        console.log("Decoded Token:", decodedToken);
-
-        alert('Login successful');
-        localStorage.setItem("userId", decodedToken.id);
-        navigate('/document-form'); 
-        window.location.reload();
-    } catch (error) {
-        console.error("Login failed:", error);
-
-        if (error.response) {
-            console.error("Response Data:", error.response.data);
-            console.error("Status Code:", error.response.status);
-            console.error("Headers:", error.response.headers);
-            alert(`Error: ${error.response.data.message || "Something went wrong!"}`);
-        } else if (error.request) {
-            console.error("No response received from server:", error.request);
-            alert("Server is not responding. Please try again later.");
-        } else {
-            console.error("Request error:", error.message);
-            alert(`Error: ${error.message}`);
-        }
-    }
-};
-
+    };
 
     return (
         <Container
@@ -67,11 +45,24 @@ const Login = () => {
                 }}
             >
                 {/* Logo and Title */}
-                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 2 }}>
-                    <img src="/Logo.png" alt="Logo" width={60} height={60} />
-                    <Typography variant="h5" component="h1" color="#16425b" sx={{ ml: 1 }}>
-                        IPO Elivate
-                    </Typography>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center', // Center the image horizontally
+                        mb: 2, // Add some margin below the image
+                    }}
+                >
+                    <Box
+                        component="img"
+                        src="/Logo1Transparent.png"
+                        alt="Logo"
+                        sx={{
+                            width: { xs: '100%', sm: '50%' }, // 100% width on extra small screens, 50% on small and up
+                            height: 'auto', // Maintain aspect ratio
+                            transition: 'transform 0.5s',
+                            borderRadius: '4px',
+                        }}
+                    />
                 </Box>
 
                 {/* Login Heading */}
