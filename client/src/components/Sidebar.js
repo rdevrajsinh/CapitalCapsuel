@@ -53,22 +53,32 @@ const Sidebar = ({ onLogout }) => {
         open={drawerOpen}
         onClose={isMobile ? toggleDrawer : undefined} // Only close on mobile
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
-          <img
-            src="/Logo.png"
-            alt="Logo"
-            style={{
-              width: '40px',
-              height: '40px',
-              marginRight: '8px',
-              transition: 'transform 0.5s',
-              transform: animateLogo ? 'translateY(-20px)' : 'translateY(0)',
-            }}
-          />
-          <Typography variant="h6" color="#ffffff">
-            IPO Elivate
-          </Typography>
-        </Box>
+      
+
+      <Box
+    sx={{
+        display: 'flex',
+        justifyContent: 'center', // Center the image horizontally
+        mb: 1, // Add some margin below the image
+        background: '#ffffff', // White background for the logo
+        padding: 1.5,
+        borderRadius: '8px', // Add border radius for rounded corners
+        //boxShadow: 2, // Optional: add a shadow for depth
+        mx: 2, // Add horizontal margin (left and right)
+        mt: 2, // Add top margin
+    }}
+>
+    <Box
+        component="img"
+        src="/Logo1Transparent.png"
+        alt="Logo"
+        sx={{
+            width: { xs: '100%', sm: '70%' }, // 100% width on extra small screens, 50% on small and up
+            height: 'auto', // Maintain aspect ratio
+        }}
+    />
+</Box>
+
         <List sx={{ marginTop: 2 }}>
           {[
             { text: 'Documents', icon: <Description />, path: '/document-form' },
