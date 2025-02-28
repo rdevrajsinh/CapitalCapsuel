@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { TextField, Button, Typography, Container, Box } from '@mui/material';
+import { TextField, Button, Typography, Container, Box, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false); // State to manage loading
     const navigate = useNavigate(); // Initialize useNavigate
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true); // Set loading to true when login starts
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { email, password });
             console.log("Response Data:", response.data);
             const decodedToken = jwtDecode(response.data.token);
             console.log("Decoded Token:", decodedToken);
-           // alert('Login successful');
             localStorage.setItem("userId", decodedToken.id);
             navigate('/document-form'); // Redirect to Info page
             window.location.reload();
         } catch (error) {
             alert('Login failed');
+        } finally {
+            setLoading(false); // Set loading to false when login completes
         }
     };
 
@@ -42,6 +45,7 @@ const Login = () => {
                     boxShadow: 3,
                     p: 4,
                     width: '100%',
+                    position: 'relative', // Position relative for absolute positioning of CircularProgress
                 }}
             >
                 {/* Logo and Title */}
@@ -99,8 +103,21 @@ const Login = () => {
                     </Button>
                 </form>
 
+                {/* Circular Progress Indicator */}
+                {loading && (
+                    <CircularProgress
+                        size={24}
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                        }}
+                    />
+                )}
+
                 {/* Sign Up Text with only "Sign Up" clickable */}
-                <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+                <Typography variant="body2" align="center" sx {{ mt: 2 }}>
                     Don't have an account?{' '}
                     <Typography
                         component="span"
